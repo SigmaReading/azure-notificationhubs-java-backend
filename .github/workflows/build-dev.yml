@@ -9,7 +9,7 @@ on:
             - main
 
 jobs:
-    build-listmonk-package:
+    build-NotificationHubs-package:
         runs-on: ubuntu-latest
         timeout-minutes: 40
         steps:
@@ -22,7 +22,10 @@ jobs:
                   distribution: "temurin"
                   java-version: 21
 
-            - name: Publish Listmonk-Api to GitHub Packages on push
+            - name: cd folder
+              run: cd NotificationHubs
+
+            - name: Publish NotificationHubs to GitHub Packages on push
               if: github.event_name == 'push'
               env:
                   GITHUB_TOKEN: ${{ github.token }}
