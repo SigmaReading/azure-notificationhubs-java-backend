@@ -3,10 +3,10 @@ name: Daily Application CI
 on:
     push:
         branches:
-            - dev
+            - main
     pull_request:
         branches:
-            - dev
+            - main
 
 jobs:
     build-listmonk-package:
