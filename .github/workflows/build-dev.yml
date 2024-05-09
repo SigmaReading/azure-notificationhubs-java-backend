@@ -15,7 +15,6 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
-              working-directory: ./NotificationHubs
 
             - name: Setup Java JDK
               uses: actions/setup-java@v2
@@ -23,14 +22,12 @@ jobs:
                   distribution: "temurin"
                   java-version: 21
 
-            - name: cd folder
-              run: cd ./NotificationHubs
-
             - name: Publish NotificationHubs to GitHub Packages on push
               if: github.event_name == 'push'
               env:
                   GITHUB_TOKEN: ${{ github.token }}
                   MODE: ""
+              working-directory: ./NotificationHubs
               run: mvn deploy
 
             - name: Run Maven Verify on pull request
@@ -38,4 +35,5 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ github.token }}
                   MODE: ""
+              working-directory: ./NotificationHubs
               run: mvn -ntp verify
