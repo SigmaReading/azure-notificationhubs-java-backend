@@ -1,0 +1,37 @@
+name: Daily Application CI
+
+on:
+    push:
+        branches:
+            - dev
+    pull_request:
+        branches:
+            - dev
+
+jobs:
+    build-listmonk-package:
+        runs-on: ubuntu-latest
+        timeout-minutes: 40
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup Java JDK
+              uses: actions/setup-java@v2
+              with:
+                  distribution: "temurin"
+                  java-version: 21
+
+            - name: Publish Listmonk-Api to GitHub Packages on push
+              if: github.event_name == 'push'
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
+                  MODE: ""
+              run: mvn deploy
+
+            - name: Run Maven Verify on pull request
+              if: github.event_name == 'pull_request'
+              env:
+                  GITHUB_TOKEN: ${{ github.token }}
+                  MODE: ""
+              run: mvn -ntp verify
